@@ -1,0 +1,19 @@
+server:
+  port: 8082
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://xxx:3306/warehouse?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=true
+      username: root
+      password:       #自己注册
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      max-wait: 3000
+      query-timeout: 10
+      validation-query: SELECT 1
+      use-global-data-source-stat: true
+  redis:
+    host: xxxx  #自己注册
+    port: 6379
+    password:    #自己注册
+    database: 3
+    timeout: 5000
