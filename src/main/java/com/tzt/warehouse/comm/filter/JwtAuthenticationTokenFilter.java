@@ -1,4 +1,4 @@
-package com.tzt.warehouse.filter;
+package com.tzt.warehouse.comm.filter;
 
 import com.tzt.warehouse.entity.LoginUser;
 import com.tzt.warehouse.comm.utlis.JwtUtil;

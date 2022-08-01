@@ -1,7 +1,7 @@
-package com.tzt.warehouse.config;
+package com.tzt.warehouse.comm.config;
 
 
-import com.tzt.warehouse.filter.JwtAuthenticationTokenFilter;
+import com.tzt.warehouse.comm.filter.JwtAuthenticationTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

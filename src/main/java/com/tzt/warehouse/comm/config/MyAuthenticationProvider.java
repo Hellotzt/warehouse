@@ -1,4 +1,4 @@
-package com.tzt.warehouse.config;
+package com.tzt.warehouse.comm.config;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;

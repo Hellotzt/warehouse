@@ -1,4 +1,4 @@
-package com.tzt.warehouse.config;
+package com.tzt.warehouse.comm.config;
 
 import com.tzt.warehouse.comm.utlis.FastJsonRedisSerializer;
 import org.springframework.context.annotation.Bean;

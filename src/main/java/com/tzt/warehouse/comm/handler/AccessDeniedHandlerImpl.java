@@ -1,4 +1,4 @@
-package com.tzt.warehouse.handler;
+package com.tzt.warehouse.comm.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.tzt.warehouse.comm.base.ResponseResult;

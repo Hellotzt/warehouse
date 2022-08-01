@@ -1,4 +1,4 @@
-package com.tzt.warehouse.config;
+package com.tzt.warehouse.comm.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
