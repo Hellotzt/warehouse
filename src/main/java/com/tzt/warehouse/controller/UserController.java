@@ -2,6 +2,7 @@ package com.tzt.warehouse.controller;
 
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.entity.User;
+import com.tzt.warehouse.entity.dto.PasswordDto;
 import com.tzt.warehouse.entity.dto.RegisterDto;
 import com.tzt.warehouse.entity.dto.UserDto;
 import com.tzt.warehouse.service.UserService;
@@ -38,5 +39,10 @@ public class UserController {
     @PreAuthorize("hasAuthority('system:user:update')")
     public ResponseResult<Object> userList(@RequestBody UserDto userDto){
         return userService.userList(userDto);
+    }
+
+    @PostMapping("/user/updatePassword")
+    public ResponseResult<Object> updatePassword(@RequestBody@Valid PasswordDto passwordDto){
+        return userService.updatePassword(passwordDto);
     }
 }

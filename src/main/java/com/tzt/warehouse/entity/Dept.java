@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class Dept {
     @TableId
-    private int id;
+    private Integer id;
     /**
      * 部门名称
      */

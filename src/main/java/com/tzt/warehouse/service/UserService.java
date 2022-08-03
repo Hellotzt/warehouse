@@ -3,6 +3,7 @@ package com.tzt.warehouse.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.entity.User;
+import com.tzt.warehouse.entity.dto.PasswordDto;
 import com.tzt.warehouse.entity.dto.RegisterDto;
 import com.tzt.warehouse.entity.dto.UserDto;
 
@@ -30,4 +31,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     ResponseResult<Object> userList(UserDto userDto);
+
+    /**
+     * 修改密码
+     * @param passwordDto
+     * @return
+     */
+    ResponseResult<Object> updatePassword(PasswordDto passwordDto);
 }

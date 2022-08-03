@@ -1,9 +1,10 @@
 package com.tzt.warehouse.comm.filter;
 
-import com.tzt.warehouse.entity.LoginUser;
+import com.tzt.warehouse.comm.Enum.WareHouseEnum;
 import com.tzt.warehouse.comm.utlis.JwtUtil;
 import com.tzt.warehouse.comm.utlis.RedisCache;
 import com.tzt.warehouse.comm.utlis.UserUtlis;
+import com.tzt.warehouse.entity.LoginUser;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -48,13 +49,14 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         //    从redis中获取用户信息
-        String redisKey = "login:" + userId;
+        String redisKey = WareHouseEnum.LOGIN_KEY + userId;
         LoginUser user = redisCache.getCacheObject(redisKey);
-        //存到缓存
-        UserUtlis.set(user);
+
         if (Objects.isNull(user)) {
             throw new RuntimeException("用户未登录");
         }
+        //存到ThreadLocal
+        UserUtlis.set(user);
         //    存入SecurityContextHolder
         //TODO 获取权限信息封装到 Authentication
         UsernamePasswordAuthenticationToken authenticationToken =

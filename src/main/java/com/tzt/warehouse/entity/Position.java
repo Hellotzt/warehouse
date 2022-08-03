@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class Position {
     @TableId
-    private int id;
+    private Integer id;
     /**
      * 职位名称
      */

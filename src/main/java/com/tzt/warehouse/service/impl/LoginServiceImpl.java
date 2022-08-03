@@ -1,5 +1,6 @@
 package com.tzt.warehouse.service.impl;
 
+import com.tzt.warehouse.comm.Enum.WareHouseEnum;
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.comm.exception.BusinessException;
 import com.tzt.warehouse.comm.exception.ErrorCodeEnum;
@@ -20,6 +21,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author：帅气的汤
@@ -76,7 +78,7 @@ public class LoginServiceImpl implements LoginService {
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
         //把完整的用户信息存入redis， userId作为key
-        redisCache.setCacheObject("login:"+userId, loginUser);
+        redisCache.setCacheObject(WareHouseEnum.LOGIN_KEY+userId, loginUser,1, TimeUnit.HOURS);
         HashMap<Object, Object> map = new HashMap<>(4);
         map.put("token", jwt);
         map.put("userType",loginUser.getUser().getUserType());
@@ -88,7 +90,7 @@ public class LoginServiceImpl implements LoginService {
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         String userId = loginUser.getUser().getId();
-        redisCache.deleteObject("login:"+userId);
+        redisCache.deleteObject(WareHouseEnum.LOGIN_KEY+userId);
         return new ResponseResult(200, "注销成功");
     }
 

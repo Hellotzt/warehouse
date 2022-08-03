@@ -1,4 +1,4 @@
-package com.tzt.warehouse.expression;
+package com.tzt.warehouse.comm.expression;
 
 import com.tzt.warehouse.entity.LoginUser;
 import org.springframework.security.core.Authentication;
