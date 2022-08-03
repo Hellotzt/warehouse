@@ -1,7 +1,10 @@
 package com.tzt.warehouse.comm.base;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.tzt.warehouse.comm.exception.ErrorCodeEnum;
+
+import java.util.HashMap;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseResult<T> {
@@ -33,6 +36,15 @@ public class ResponseResult<T> {
     public ResponseResult(Integer code, T data) {
         this.code = code;
         this.data = data;
+    }
+    public ResponseResult(Page page) {
+        this.code = 0;
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("result",page.getRecords());
+        map.put("total", page.getTotal());
+        map.put("current", page.getCurrent());
+        map.put("size", page.getSize());
+        this.data = (T) map;
     }
 
     public Integer getCode() {

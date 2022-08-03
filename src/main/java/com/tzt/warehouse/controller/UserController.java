@@ -2,6 +2,7 @@ package com.tzt.warehouse.controller;
 
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.entity.User;
+import com.tzt.warehouse.entity.dto.RegisterDto;
 import com.tzt.warehouse.entity.dto.UserDto;
 import com.tzt.warehouse.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +24,19 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/user/register")
-    public ResponseResult<Object> register(@RequestBody @Valid UserDto userDto){
-        return userService.register(userDto);
+    public ResponseResult<Object> register(@RequestBody @Valid RegisterDto registerDto){
+        return userService.register(registerDto);
     }
 
     @PostMapping("/user/updateUser")
     @PreAuthorize("hasAuthority('system:user:update')")
     public ResponseResult<Object> updateUser(@RequestBody User user){
         return userService.updateUser(user);
+    }
+
+    @PostMapping("/user/userList")
+    @PreAuthorize("hasAuthority('system:user:update')")
+    public ResponseResult<Object> userList(@RequestBody UserDto userDto){
+        return userService.userList(userDto);
     }
 }

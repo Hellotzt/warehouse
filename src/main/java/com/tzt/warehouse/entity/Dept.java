@@ -1,5 +1,6 @@
 package com.tzt.warehouse.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  */
 @Data
 public class Dept {
+    @TableId
     private int id;
     /**
      * 部门名称

@@ -1,54 +1,70 @@
 package com.tzt.warehouse.entity.dto;
 
-import lombok.AllArgsConstructor;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 /**
- * UserDto
- *
- * @author 帅气的汤
+ * @author：帅气的汤
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class UserDto implements Serializable {
-    private static final long serialVersionUID = -40356785423868312L;
-
+public class UserDto extends PageDto{
     /**
-    * 用户名
-    */
-    @NotBlank(message = "用户名不能为空")
+     * 用户名
+     */
     private String userName;
 
     /**
-    * 密码
-    */
-    @NotBlank(message = "密码不能为空")
-    private String password;
-
+     * 账号状态（0正常 1停用 2审核中）
+     */
+    private String status;
     /**
-    * 手机号
-    */
-    @NotBlank(message = "手机号不能为空")
-    @Size(min = 11,max = 11,message = "联系电话长度有误")
+     * 邮箱
+     */
+    private String email;
+    /**
+     * 手机号
+     */
     private String phone;
     /**
-    * 用户性别（0女，1男，2未知）
-    */
-    @NotBlank(message = "性别不能为空")
+     * 用户性别（0女，1男，2未知）
+     */
     private String sex;
+    /**
+     * 用户类型（0超级管理员，1管理员，2普通用户）
+     */
+    private String userType;
 
+    /**
+     * 删除标志（0代表未删除，1代表已删除）
+     */
+    private Integer delFlag;
     /**
      * 身份证
      */
-    @NotBlank(message = "身份证不能为空")
-    @Size(min = 18,max = 18,message = "身份证长度有误")
     private String idCard;
-
-
+    /**
+     * 职位
+     */
+    private String position;
+    /**
+     * 部门
+     */
+    private String department;
+    /**
+     * 薪资
+     */
+    private String salary;
+    /**
+     * 薪资最高值
+     */
+    private String max;
+    /**
+     * 薪资最小值
+     */
+    private String min;
+    /**
+     * 年龄
+     */
+    @TableField(exist = false)
+    private String age;
 }
