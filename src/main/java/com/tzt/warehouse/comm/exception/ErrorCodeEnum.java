@@ -21,7 +21,8 @@ public enum ErrorCodeEnum {
     RECORD_ERROR(412, "订单号或用户id有误"),
     EMAIL_EXIST(413, "该邮箱已经存在"),
     USER_EXIST(414, "该用户已经存在"),
-    EMAIL_NULL(415, "该邮箱尚未注册");
+    PARAM_EXIST(415, "参数已存在，请重试"),
+    EMAIL_NULL(416, "该邮箱尚未注册");
 
     private final int code;
 
