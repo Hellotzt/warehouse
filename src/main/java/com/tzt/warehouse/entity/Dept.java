@@ -19,6 +19,10 @@ public class Dept {
      */
     @NotBlank(message = "部门名称不能为空")
     private String deptName;
+    /**
+     * 上级部门id
+     */
+    private Integer pid;
 
     private int seq;
 }

@@ -19,13 +19,14 @@ import javax.validation.Valid;
 public class DeptController {
     @Resource
     private DeptService deptService;
+
     @PostMapping("/list")
-    public ResponseResult<Object> deptList(@RequestBody @Valid SearchDTO searchDTO){
+    public ResponseResult<Object> deptList(@RequestBody @Valid SearchDTO searchDTO) {
         return deptService.deptList(searchDTO);
     }
 
     @PostMapping("/add")
-    public ResponseResult<Object> add(@RequestBody  Dept dept){
+    public ResponseResult<Object> add(@RequestBody Dept dept) {
         if (!StringUtils.hasText(dept.getDeptName())) {
             return new ResponseResult<>(ErrorCodeEnum.ACCOUNT_NULL);
         }
@@ -39,22 +40,15 @@ public class DeptController {
     }
 
     @PostMapping("/delete")
-    public ResponseResult<Object> delete(@RequestBody Dept dept){
-        if (dept.getId()==null){
-            return new ResponseResult<>(ErrorCodeEnum.NULL_ID);
-        }
-        boolean b = deptService.removeById(dept.getId());
-        if (!b){
-            return new ResponseResult<>(ErrorCodeEnum.NULL_ID);
-        }
-        return ResponseResult.success();
+    public ResponseResult<Object> delete(@RequestBody Dept dept) {
+        return deptService.deleteDept(dept);
     }
 
     @PostMapping("/update")
-    public ResponseResult<Object> update(@RequestBody @Valid Dept dept){
-        try {
-            deptService.updateById(dept);
-        } catch (Exception e) {
+    public ResponseResult<Object> update(@RequestBody @Valid Dept dept) {
+
+        boolean b = deptService.updateById(dept);
+        if (!b) {
             return new ResponseResult<>(ErrorCodeEnum.NULL_ID);
         }
         return ResponseResult.success();
