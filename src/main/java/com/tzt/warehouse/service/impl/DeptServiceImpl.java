@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.comm.exception.ErrorCodeEnum;
-import com.tzt.warehouse.dao.DeptDao;
+import com.tzt.warehouse.mapper.DeptDao;
 import com.tzt.warehouse.entity.Dept;
 import com.tzt.warehouse.entity.DeptUserRole;
 import com.tzt.warehouse.entity.dto.SearchDTO;

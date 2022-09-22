@@ -26,7 +26,7 @@ public class ResponseResult<T> {
         this.msg = msg;
     }
     public static ResponseResult<Object> success() {
-       return new ResponseResult<>(0,"操作成功");
+       return new ResponseResult<>(200,"操作成功");
     }
     public ResponseResult(ErrorCodeEnum codeEnum) {
         this.code = codeEnum.getCode();
@@ -38,7 +38,7 @@ public class ResponseResult<T> {
         this.data = data;
     }
     public ResponseResult(Page page) {
-        this.code = 0;
+        this.code = 200;
         HashMap<String, Object> map = new HashMap<>();
         map.put("result",page.getRecords());
         map.put("total", page.getTotal());

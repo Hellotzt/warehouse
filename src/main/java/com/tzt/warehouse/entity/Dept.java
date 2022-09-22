@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
  * 部门表
  */
 @Data
-public class Dept {
+public class Dept extends BaseEntity{
     @TableId(type = IdType.AUTO)
     private Integer id;
     /**

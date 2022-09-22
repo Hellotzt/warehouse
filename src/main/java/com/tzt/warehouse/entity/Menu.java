@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 菜单表(Menu)实体类
@@ -21,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Menu implements Serializable {
+public class Menu extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -54979041104113736L;
     
     @TableId
@@ -54,18 +53,7 @@ public class Menu implements Serializable {
     * 菜单图标
     */
     private String icon;
-    
-    private String createBy;
-    
-    private Date createTime;
-    
-    private String updateBy;
-    
-    private Date updateTime;
-    /**
-    * 是否删除（0未删除 1已删除）
-    */
-    private Integer delFlag;
+
     /**
     * 备注
     */

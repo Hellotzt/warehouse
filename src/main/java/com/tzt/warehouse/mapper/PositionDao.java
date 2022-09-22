@@ -1,4 +1,4 @@
-package com.tzt.warehouse.dao;
+package com.tzt.warehouse.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tzt.warehouse.entity.Position;

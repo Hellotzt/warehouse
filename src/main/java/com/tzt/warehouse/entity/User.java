@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -22,7 +21,7 @@ import java.util.Date;
 @NoArgsConstructor
 @TableName("sys_user")
 @Accessors(chain = true)
-public class User implements Serializable {
+public class User extends BaseEntity implements Serializable {
     private static final long serialVersionUID = -40356785423868312L;
     
     /**
@@ -66,26 +65,6 @@ public class User implements Serializable {
     * 用户类型（0超级管理员，1管理员，2普通用户）
     */
     private String userType;
-    /**
-    * 创建人的用户id
-    */
-    private String createBy;
-    /**
-    * 创建时间
-    */
-    private Date createTime;
-    /**
-    * 更新人
-    */
-    private String updateBy;
-    /**
-    * 更新时间
-    */
-    private Date updateTime;
-    /**
-    * 删除标志（0代表未删除，1代表已删除）
-    */
-    private Integer delFlag;
     /**
      * 身份证
      */

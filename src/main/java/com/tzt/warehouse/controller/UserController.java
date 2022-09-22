@@ -1,9 +1,12 @@
 package com.tzt.warehouse.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.tzt.warehouse.comm.base.ResponseResult;
+import com.tzt.warehouse.comm.exception.ErrorCodeEnum;
 import com.tzt.warehouse.entity.User;
 import com.tzt.warehouse.entity.dto.PasswordDto;
 import com.tzt.warehouse.entity.dto.RegisterDto;
+import com.tzt.warehouse.entity.dto.SearchDTO;
 import com.tzt.warehouse.entity.dto.UserDto;
 import com.tzt.warehouse.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,9 +14,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.io.IOException;
 
 /**
  * @author：帅气的汤
@@ -51,10 +56,30 @@ public class UserController {
     }
 
     /**
+     * 修改用户头像
+     */
+    @PostMapping("/user/updateAvatar")
+    // @PreAuthorize("hasAuthority('system:user:update')")
+    public ResponseResult<Object> updateAvatar(@RequestBody MultipartFile avatar) throws IOException {
+        if (ObjectUtil.isEmpty(avatar)){
+            return new ResponseResult<>(ErrorCodeEnum.ACCOUNT_NULL);
+        }
+        return userService.updateAvatar(avatar);
+    }
+
+    /**
      * 修改密码
      */
     @PostMapping("/user/updatePassword")
     public ResponseResult<Object> updatePassword(@RequestBody@Valid PasswordDto passwordDto){
         return userService.updatePassword(passwordDto);
+    }
+
+    /**
+     * 查询新注册
+     */
+    @PostMapping("/user/newRegister")
+    public ResponseResult<Object> newRegister(@RequestBody SearchDTO searchDTO){
+        return userService.newRegister(searchDTO);
     }
 }

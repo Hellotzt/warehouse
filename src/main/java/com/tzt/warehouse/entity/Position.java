@@ -8,7 +8,7 @@ import lombok.Data;
  * 职位表
  */
 @Data
-public class Position {
+public class Position extends BaseEntity{
     @TableId
     private Integer id;
     /**

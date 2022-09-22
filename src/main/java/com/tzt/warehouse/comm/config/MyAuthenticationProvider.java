@@ -1,10 +1,12 @@
 package com.tzt.warehouse.comm.config;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tzt.warehouse.entity.User;
 import com.tzt.warehouse.service.UserService;
 import com.tzt.warehouse.service.impl.MyUserDetailsServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -25,6 +27,7 @@ import javax.annotation.Resource;
  * @version: V1.1
  */
 @Component
+@Slf4j
 public class MyAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
@@ -47,6 +50,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        log.error("账户信息校验前参数：{}", JSON.toJSON(authentication));
         String idCard = authentication.getName();
         //表单提交的用户名
         String presentedPassword = (String)authentication.getCredentials();

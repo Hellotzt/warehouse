@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8088
 spring:
   datasource:
     druid:
@@ -17,3 +17,6 @@ spring:
     password: tzt123456
     database: 3
     timeout: 5000
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

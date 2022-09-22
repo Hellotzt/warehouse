@@ -1,5 +1,6 @@
 package com.tzt.warehouse.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.tzt.warehouse.comm.Enum.WareHouseEnum;
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.comm.exception.BusinessException;
@@ -7,13 +8,15 @@ import com.tzt.warehouse.comm.exception.ErrorCodeEnum;
 import com.tzt.warehouse.comm.utlis.IpUtil;
 import com.tzt.warehouse.comm.utlis.JwtUtil;
 import com.tzt.warehouse.comm.utlis.RedisCache;
+import com.tzt.warehouse.comm.utlis.UserUtlis;
 import com.tzt.warehouse.entity.LoginUser;
 import com.tzt.warehouse.entity.dto.LoginDto;
 import com.tzt.warehouse.service.LoginService;
+import com.tzt.warehouse.service.SysUserRoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -27,14 +30,18 @@ import java.util.concurrent.TimeUnit;
  * @author：帅气的汤
  */
 @Service
+@Slf4j
 public class LoginServiceImpl implements LoginService {
     @Resource
     private AuthenticationManager authenticationManager;
     @Resource
     private RedisCache redisCache;
+    @Resource
+    private SysUserRoleService sysUserRoleService;
 
     @Override
     public ResponseResult<Object> login(LoginDto loginDto,HttpServletRequest request) {
+        log.info("请求登录接口报文：{}",JSON.toJSON(loginDto));
         //验证码校验
         String verify = null;
         try {
@@ -48,19 +55,6 @@ public class LoginServiceImpl implements LoginService {
             }
             redisCache.deleteObject("verify:"+IpUtil.getIpAddress(request));
         }
-
-        SecurityContextHolder.getContext().getAuthentication();
-        // RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-        // HttpServletRequest request = null;
-        // if (requestAttributes != null) {
-        //     request = ((ServletRequestAttributes) requestAttributes).getRequest();
-        // }
-        //
-        //
-        // if (request == null) {
-        //     return null;
-        // }
-        // 获取到token  在处理就是了
 
 
         //AuthenticationManager authenticate进行用户认证
@@ -81,14 +75,16 @@ public class LoginServiceImpl implements LoginService {
         redisCache.setCacheObject(WareHouseEnum.LOGIN_KEY+userId, loginUser,1, TimeUnit.HOURS);
         HashMap<Object, Object> map = new HashMap<>(4);
         map.put("token", jwt);
-        map.put("userType",loginUser.getUser().getUserType());
-        return new ResponseResult(0,map );
+        String roleId = sysUserRoleService.getById(userId).getRoleId();
+        map.put("userType",roleId);
+        log.info("登录成功:{}", JSON.toJSON(map));
+        return new ResponseResult(200,map );
     }
 
     @Override
     public ResponseResult logout() {
-        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        LoginUser loginUser = UserUtlis.get();
+
         String userId = loginUser.getUser().getId();
         redisCache.deleteObject(WareHouseEnum.LOGIN_KEY+userId);
         return new ResponseResult(200, "注销成功");

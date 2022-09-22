@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * 职位表
  */
 @Data
-public class DeptUserRole {
+public class DeptUserRole extends BaseEntity{
     private Integer id;
     @NotNull(message = "部门id不能为空")
     private Integer deptId;

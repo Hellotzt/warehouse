@@ -1,8 +1,8 @@
 package com.tzt.warehouse.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.tzt.warehouse.dao.MenuDao;
-import com.tzt.warehouse.dao.UserDao;
+import com.tzt.warehouse.mapper.MenuDao;
+import com.tzt.warehouse.mapper.UserDao;
 import com.tzt.warehouse.entity.LoginUser;
 import com.tzt.warehouse.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;

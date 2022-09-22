@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tzt.warehouse.comm.base.ResponseResult;
-import com.tzt.warehouse.dao.DeptUserRoleDao;
+import com.tzt.warehouse.mapper.DeptUserRoleDao;
 import com.tzt.warehouse.entity.DeptUserRole;
 import com.tzt.warehouse.entity.dto.SearchDTO;
 import com.tzt.warehouse.service.DeptUserRoleService;

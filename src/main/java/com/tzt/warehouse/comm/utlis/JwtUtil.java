@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -14,6 +15,7 @@ import java.util.UUID;
 /**
  * JWT工具类
  */
+@Slf4j
 public class JwtUtil {
 
     //有效期为
@@ -32,7 +34,11 @@ public class JwtUtil {
      * @return
      */
     public static String createJWT(String subject) {
-        JwtBuilder builder = getJwtBuilder(subject, null, getUUID());// 设置过期时间
+        // 设置唯一id
+        String uuid = getUUID();
+        log.info("用户id：{}",subject);
+        JwtBuilder builder = getJwtBuilder(subject, null,uuid );
+        log.info("我是想看的内容：{}",builder);
         return builder.compact();
     }
 
@@ -74,7 +80,8 @@ public class JwtUtil {
      * @return
      */
     public static String createJWT(String id, String subject, Long ttlMillis) {
-        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, id);// 设置过期时间
+        // 设置过期时间
+        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, id);
         return builder.compact();
     }
 

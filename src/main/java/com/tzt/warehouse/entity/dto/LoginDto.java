@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class LoginDto {
     @NotNull(message = "身份证不能为空")
-    private Integer idCard;
+    private String idCard;
     @NotBlank(message = "密码不能为空")
     private String password;
     @NotBlank(message = "验证码不能为空")

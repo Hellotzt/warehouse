@@ -1,22 +1,19 @@
 server:
-  port: 8088
+  port: 8082
 spring:
   datasource:
     druid:
       url: jdbc:mysql://localhost:3306/warehouse?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=true
       username: root
-      password: tzt1234560.0      #自己注册
+      password:       #自己注册
       driver-class-name: com.mysql.cj.jdbc.Driver
       max-wait: 3000
       query-timeout: 10
       validation-query: SELECT 1
       use-global-data-source-stat: true
   redis:
-    host: localhost  #自己注册
+    host: xxxx  #自己注册
     port: 6379
-    password: tzt123456    #自己注册
-    database: 10
+    password:    #自己注册
+    database: 3
     timeout: 5000
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
