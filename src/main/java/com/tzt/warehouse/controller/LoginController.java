@@ -36,7 +36,6 @@ public class LoginController {
 
     @PostMapping("/user/login")
     public ResponseResult<Object> login(@RequestBody @Valid LoginDto loginDto, HttpServletRequest request){
-
         // try {
         //     minioUtils.createBucket("test2");
         // } catch (Exception e) {
@@ -46,9 +45,14 @@ public class LoginController {
         return loginService.login(loginDto,request);
     }
 
+    @PostMapping("/user/refreshToken")
+    public ResponseResult<Object> refreshToken(String refreshToken){
+        return loginService.refreshToken(refreshToken);
+    }
+
     @PostMapping("/user/logout")
-    public ResponseResult logout(){
-        return loginService.logout();
+    public ResponseResult logout(String refreshToken){
+        return loginService.logout(refreshToken);
     }
 
     @GetMapping("/verify")

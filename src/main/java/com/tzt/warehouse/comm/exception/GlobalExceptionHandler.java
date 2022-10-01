@@ -24,11 +24,12 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-    // @ExceptionHandler(BusinessException.class)
-    // public BaseResponse<String> handleBusinessException(BusinessException e) {
-    //     log.error("BusinessException", e);
-    //     return ResultUtils.error(e.getCode(), e.getMessage());
-    // }
+    @ExceptionHandler(BusinessException.class)
+    public ResponseResult<String> handleBusinessException(BusinessException e) {
+        log.error("BusinessException", e);
+        return
+        new ResponseResult<>(e.getCode(), e.getMessage());
+    }
     //
     // /**
     //  * 运行时异常

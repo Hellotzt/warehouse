@@ -28,6 +28,7 @@ public class ResponseResult<T> {
     public static ResponseResult<Object> success() {
        return new ResponseResult<>(200,"操作成功");
     }
+
     public ResponseResult(ErrorCodeEnum codeEnum) {
         this.code = codeEnum.getCode();
         this.msg = codeEnum.getMessage();
@@ -35,6 +36,10 @@ public class ResponseResult<T> {
 
     public ResponseResult(Integer code, T data) {
         this.code = code;
+        this.data = data;
+    }
+    public ResponseResult( T data) {
+        this.code = 200;
         this.data = data;
     }
     public ResponseResult(Page page) {

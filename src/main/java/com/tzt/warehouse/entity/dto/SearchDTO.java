@@ -4,6 +4,10 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author tzt
+ * 通用搜索实体
+ */
 @Data
 public class SearchDTO {
 

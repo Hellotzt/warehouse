@@ -72,11 +72,11 @@ public class User extends BaseEntity implements Serializable {
     /**
      * 职位
      */
-    private String position;
+    private String positionId;
     /**
      * 部门
      */
-    private String department;
+    private String deptId;
     /**
      * 薪资
      */
@@ -86,4 +86,15 @@ public class User extends BaseEntity implements Serializable {
      */
     @TableField(exist = false)
     private String age;
+
+    /**
+     * 部门名称
+     */
+    @TableField(exist = false)
+    private String deptName;
+    /**
+     * 机构名称
+     */
+    @TableField(exist = false)
+    private String positionName;
 }

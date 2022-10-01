@@ -3,7 +3,6 @@ package com.tzt.warehouse.controller;
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.comm.exception.ErrorCodeEnum;
 import com.tzt.warehouse.entity.Position;
-import com.tzt.warehouse.entity.dto.SearchDTO;
 import com.tzt.warehouse.service.PositionService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +23,8 @@ public class PositionController {
     private PositionService positionService;
 
     @PostMapping("/list")
-    public ResponseResult<Object> positionList(@RequestBody @Valid SearchDTO searchDTO) {
-        return positionService.positionList(searchDTO);
+    public ResponseResult<Object> positionList() {
+        return positionService.positionList();
     }
 
     @PostMapping("/add")

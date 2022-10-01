@@ -1,14 +1,12 @@
 package com.tzt.warehouse.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.comm.exception.ErrorCodeEnum;
-import com.tzt.warehouse.mapper.PositionDao;
 import com.tzt.warehouse.entity.DeptUserRole;
 import com.tzt.warehouse.entity.Position;
-import com.tzt.warehouse.entity.dto.SearchDTO;
+import com.tzt.warehouse.mapper.PositionDao;
 import com.tzt.warehouse.service.DeptUserRoleService;
 import com.tzt.warehouse.service.PositionService;
 import org.springframework.stereotype.Service;
@@ -23,11 +21,10 @@ public class PositionServiceImpl extends ServiceImpl<PositionDao, Position> impl
     @Resource
     private DeptUserRoleService deptUserRoleService;
     @Override
-    public ResponseResult<Object> positionList(SearchDTO searchDTO) {
+    public ResponseResult<Object> positionList() {
         QueryWrapper<Position> wrapper = new QueryWrapper<>();
         wrapper.orderByAsc("seq");
-        Page<Position> positionList = this.page(new Page<>(searchDTO.getCurrent(), searchDTO.getSize()),wrapper);
-        return new ResponseResult<>(positionList);
+        return new ResponseResult<>(this.list(wrapper));
     }
 
     @Override

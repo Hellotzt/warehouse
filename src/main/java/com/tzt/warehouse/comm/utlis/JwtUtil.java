@@ -18,10 +18,13 @@ import java.util.UUID;
 @Slf4j
 public class JwtUtil {
 
-    //有效期为
-    public static final Long JWT_TTL = 60 * 60 *1000L;// 60 * 60 *1000  一个小时
+    //有效期为 60 * 60 *1000  一个小时
+    public static final Long JWT_TTL = 60 * 60 * 1000L;
     //设置秘钥明文
     public static final String JWT_KEY = "sangeng";
+    public static final String LONG_JWT_KEY = "longKey";
+    // 长token过期时间14天
+    public static long expTime = 60 * 60 * 1000 * 24 * 14L;
 
     public static String getUUID(){
         String token = UUID.randomUUID().toString().replaceAll("-", "");
@@ -48,8 +51,15 @@ public class JwtUtil {
      * @param ttlMillis token超时时间
      * @return
      */
-    public static String createJWT(String subject, Long ttlMillis) {
-        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, getUUID());// 设置过期时间
+    public static String createJwt(String subject, Long ttlMillis) {
+        // 设置过期时间
+        JwtBuilder builder = getJwtBuilder(subject, ttlMillis, getUUID());
+        return builder.compact();
+    }
+
+    public static String createLongJwt(String subject) {
+        // 设置过期时间
+        JwtBuilder builder = getLongJwt(subject, expTime, getUUID());
         return builder.compact();
     }
 
@@ -61,6 +71,22 @@ public class JwtUtil {
         if(ttlMillis==null){
             ttlMillis=JwtUtil.JWT_TTL;
         }
+        long expMillis = nowMillis + ttlMillis;
+        Date expDate = new Date(expMillis);
+        return Jwts.builder()
+                .setId(uuid)              //唯一的ID
+                .setSubject(subject)   // 主题  可以是JSON数据
+                .setIssuer("sg")     // 签发者
+                .setIssuedAt(now)      // 签发时间
+                .signWith(signatureAlgorithm, secretKey) //使用HS256对称加密算法签名, 第二个参数为秘钥
+                .setExpiration(expDate);
+    }
+    private static JwtBuilder getLongJwt(String subject, Long ttlMillis, String uuid) {
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        SecretKey secretKey = generalLongKey();
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+
         long expMillis = nowMillis + ttlMillis;
         Date expDate = new Date(expMillis);
         return Jwts.builder()
@@ -105,6 +131,13 @@ public class JwtUtil {
         SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
         return key;
     }
+
+    public static SecretKey generalLongKey() {
+        byte[] encodedKey = Base64.getDecoder().decode(JwtUtil.LONG_JWT_KEY);
+        SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
+        return key;
+    }
+
     
     /**
      * 解析
@@ -115,6 +148,14 @@ public class JwtUtil {
      */
     public static Claims parseJWT(String jwt) throws Exception {
         SecretKey secretKey = generalKey();
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(jwt)
+                .getBody();
+    }
+
+    public static Claims parseLongJWT(String jwt) throws Exception {
+        SecretKey secretKey = generalLongKey();
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(jwt)

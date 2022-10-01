@@ -13,6 +13,7 @@ import com.tzt.warehouse.comm.utlis.MinioUtils;
 import com.tzt.warehouse.comm.utlis.RedisCache;
 import com.tzt.warehouse.comm.utlis.StrUtils;
 import com.tzt.warehouse.comm.utlis.UserUtlis;
+import com.tzt.warehouse.entity.DeptPosition;
 import com.tzt.warehouse.entity.LoginUser;
 import com.tzt.warehouse.entity.SysUserRole;
 import com.tzt.warehouse.entity.User;
@@ -21,6 +22,7 @@ import com.tzt.warehouse.entity.dto.RegisterDto;
 import com.tzt.warehouse.entity.dto.SearchDTO;
 import com.tzt.warehouse.entity.dto.UserDto;
 import com.tzt.warehouse.mapper.UserDao;
+import com.tzt.warehouse.service.DeptPositionService;
 import com.tzt.warehouse.service.SysUserRoleService;
 import com.tzt.warehouse.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author：帅气的汤
@@ -46,6 +50,8 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Resource
     private SysUserRoleService sysUserRoleService;
+    @Resource
+    private DeptPositionService deptPositionService;
 
     @Override
     public ResponseResult<Object> register(RegisterDto registerDto) {
@@ -67,6 +73,11 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         return new ResponseResult<>(ErrorCodeEnum.USER_EXIST);
     }
 
+    public static void main(String[] args) {
+        String admin = new BCryptPasswordEncoder().encode("admin");
+        System.out.println(admin);
+    }
+
     @Override
     public ResponseResult<Object> updateUser(User user) {
         if (!StringUtils.hasText(user.getId())) {
@@ -74,7 +85,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         }
         // 如果要修改密码。先把明文密码加密 在存
         if (StringUtils.hasText(user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User one = this.getOne(new LambdaQueryWrapper<User>().eq(User::getId, user.getId()));
+            if (!user.getPassword().equals(one.getPassword())) {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
         }
         this.updateById(user);
         return ResponseResult.success();
@@ -88,11 +102,27 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         wrapper.like(StringUtils.hasText(userDto.getIdCard()), User::getIdCard, userDto.getIdCard());
         wrapper.eq(StringUtils.hasText(userDto.getSex()), User::getSex, userDto.getSex());
         wrapper.eq(StringUtils.hasText(userDto.getUserType()), User::getUserType, userDto.getUserType());
-        wrapper.eq(StringUtils.hasText(userDto.getDepartment()), User::getDepartment, userDto.getDepartment());
-        wrapper.eq(StringUtils.hasText(userDto.getPosition()), User::getPosition, userDto.getPosition());
+        wrapper.eq(StringUtils.hasText(userDto.getDepartment()), User::getDeptId, userDto.getDepartment());
+        wrapper.eq(StringUtils.hasText(userDto.getPosition()), User::getPositionId, userDto.getPosition());
         wrapper.eq(StringUtils.hasText(userDto.getStatus()), User::getStatus, userDto.getStatus());
-        wrapper.between(StringUtils.hasText(userDto.getMax()) && StringUtils.hasText(userDto.getMin()), User::getSalary, userDto.getMax(), userDto.getMin());
+
+        wrapper.between(StringUtils.hasText(userDto.getMax()) && StringUtils.hasText(userDto.getMin()), User::getSalary, userDto.getMin(), userDto.getMax());
         Page<User> page = this.page(new Page<>(userDto.getCurrent(), userDto.getSize()), wrapper);
+        List<DeptPosition> deptPositionList = deptPositionService.list();
+
+        page.getRecords().forEach(user -> {
+            Optional<DeptPosition> optional = deptPositionList.stream().filter(deptPosition -> {
+                return deptPosition.getDeptId().equals(user.getDeptId()) && deptPosition.getPositionId().equals(user.getPositionId());
+            }).findFirst();
+
+            if (optional.isPresent()) {
+                DeptPosition deptPosition = optional.get();
+                user.setPositionName(deptPosition.getPositionName());
+                user.setDeptName(deptPosition.getDeptName());
+            }
+
+        });
+
         return new ResponseResult(page);
     }
 

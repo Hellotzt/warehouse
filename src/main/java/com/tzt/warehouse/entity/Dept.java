@@ -1,10 +1,12 @@
 package com.tzt.warehouse.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * @author：帅气的汤
@@ -25,4 +27,7 @@ public class Dept extends BaseEntity{
     private Integer pid;
 
     private int seq;
+
+    @TableField(exist = false)
+    private List<Dept> children;
 }

@@ -2,11 +2,16 @@ package com.tzt.warehouse.controller;
 
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.comm.exception.ErrorCodeEnum;
+import com.tzt.warehouse.comm.utlis.UserUtlis;
 import com.tzt.warehouse.entity.Dept;
-import com.tzt.warehouse.entity.dto.SearchDTO;
+import com.tzt.warehouse.entity.dto.DeptDto;
 import com.tzt.warehouse.service.DeptService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -16,13 +21,19 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/dept")
+@Slf4j
 public class DeptController {
     @Resource
     private DeptService deptService;
 
     @PostMapping("/list")
-    public ResponseResult<Object> deptList(@RequestBody @Valid SearchDTO searchDTO) {
-        return deptService.deptList(searchDTO);
+    public ResponseResult<Object> deptList(@RequestBody DeptDto deptDto) {
+        return deptService.deptList(deptDto);
+    }
+
+    @PostMapping("/all")
+    public ResponseResult<Object> all() {
+        return deptService.all();
     }
 
     @PostMapping("/add")
@@ -34,6 +45,7 @@ public class DeptController {
         try {
             deptService.save(dept);
         } catch (Exception e) {
+            log.error("新增部门异常：{},操作用户：{}",e, UserUtlis.get().getUser().getUserName());
             return new ResponseResult<>(ErrorCodeEnum.PARAM_EXIST);
         }
         return ResponseResult.success();

@@ -3,6 +3,8 @@ package com.tzt.warehouse.entity.dto;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author：帅气的汤
  */
@@ -53,7 +55,7 @@ public class UserDto extends PageDto{
     /**
      * 薪资
      */
-    private String salary;
+    private BigDecimal salary;
     /**
      * 薪资最高值
      */

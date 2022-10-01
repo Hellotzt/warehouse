@@ -24,7 +24,9 @@ public enum ErrorCodeEnum {
     PARAM_EXIST(415, "参数已存在，请重试"),
     EMAIL_NULL(416, "该邮箱尚未注册"),
     POSITION_ERROR(417, "有用户对应该职位，修改后重试"),
-    DEPT_ERROR(418, "有用户对应该部门，修改后重试");
+    DEPT_ERROR(418, "有用户对应该部门，修改后重试"),
+    TOKEN_ERROR(419, "token已失效"),
+    ;
 
     private final int code;
 

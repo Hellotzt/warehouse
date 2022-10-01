@@ -30,13 +30,15 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
         //    获取token
         String token = request.getHeader("token");
-        if (!StringUtils.hasText(token)) {
+        if (!StringUtils.hasText(token) || "/api/user/refreshToken".equals(requestURI) || "/api/user/logout".equals(requestURI)) {
             //    放行
             filterChain.doFilter(request, response);
             return;
         }
+
 
         //    解析token
         String userId;

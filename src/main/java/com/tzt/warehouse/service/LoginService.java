@@ -8,5 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface LoginService {
     ResponseResult<Object> login(LoginDto loginDto, HttpServletRequest request);
 
-    ResponseResult logout();
+    ResponseResult logout(String refreshToken);
+
+    ResponseResult<Object> refreshToken(String refreshToken);
 }
