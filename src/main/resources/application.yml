@@ -6,6 +6,8 @@
 spring:
   profiles:
     active: dev
+  application:
+    name: warehouse
 server:
   servlet:
     context-path: /api
@@ -15,3 +17,10 @@ minio:
   secretKey: minioadmin
   endpoint: http://124.221.96.103:9000
   bucketName: test
+
+logging:
+  file:
+    name: ${spring.application.name}.log
+    path: ./logs
+  level:
+    root: info
