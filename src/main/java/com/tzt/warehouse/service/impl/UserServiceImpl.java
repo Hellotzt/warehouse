@@ -1,13 +1,16 @@
 package com.tzt.warehouse.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tzt.warehouse.comm.Enum.WareHouseEnum;
 import com.tzt.warehouse.comm.base.ResponseResult;
+import com.tzt.warehouse.comm.exception.BusinessException;
 import com.tzt.warehouse.comm.exception.ErrorCodeEnum;
 import com.tzt.warehouse.comm.utlis.MinioUtils;
 import com.tzt.warehouse.comm.utlis.RedisCache;
@@ -26,6 +29,7 @@ import com.tzt.warehouse.service.DeptPositionService;
 import com.tzt.warehouse.service.SysUserRoleService;
 import com.tzt.warehouse.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -52,6 +56,10 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     private SysUserRoleService sysUserRoleService;
     @Resource
     private DeptPositionService deptPositionService;
+    @Value("${minio.bucketName}")
+    private String bucketName;
+    @Value("${minio.endpoint}")
+    private String endpoint;
 
     @Override
     public ResponseResult<Object> register(RegisterDto registerDto) {
@@ -142,43 +150,44 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public ResponseResult<Object> updateAvatar(MultipartFile avatar) {
+        User userCache = UserUtlis.get().getUser();
+        log.info("登录的用户信息：{}", JSON.toJSON(userCache));
         if (!StrUtils.checkFileType(avatar)) {
             return new ResponseResult<>(ErrorCodeEnum.SAVE_ERROR);
         }
         String originalFilename = avatar.getOriginalFilename();
-
+        String avatarName = IdUtil.simpleUUID() + originalFilename;
         try {
-
-            minioUtils.putObject("text", avatar, avatar.getName(), avatar.getContentType());
-
-            // File localFile = new File("E:\\web-code",originalFilename);
-            //获得项目的类路径
-            // String path = ResourceUtils.getURL("classpath:").getPath();
-            // // //空文件夹在编译时不会打包进入target中
-            // // File uploadDir = new File(path+"/static/avatar/user");
-            // // if (!uploadDir.exists()) {
-            // //     System.out.println("上传头像路径不存在，正在创建...");
-            // //     uploadDir.mkdir();
-            // // }
-            // String fileSeparator = System.getProperty("file.separator");
-            // File file = new File(System.getProperty("user.dir") + fileSeparator + "a.txt");
-            // file.createNewFile();
-            // File localFile = new File(path + "/static/" ,avatar.getOriginalFilename());
-            // localFile.createNewFile();
-            // String absolutePath = localFile.getAbsolutePath();
-            //
-            //
-            // String fileName = System.currentTimeMillis() / 1000 + "-" + avatar.getOriginalFilename();
-            // FileOutputStream outputStream = new FileOutputStream(localFile);
-            // outputStream.write(avatar.getBytes());
-            // outputStream.close();
-            // avatar.transferTo(localFile);
+            minioUtils.putObject(bucketName, avatar, avatarName, avatar.getContentType());
         } catch (Exception e) {
-            e.printStackTrace();
-
+            log.error("上传到minio失败：{}",e.getMessage());
+            throw new BusinessException(ErrorCodeEnum.SAVE_ERROR);
         }
-        log.info("文件名：{}", originalFilename);
-        return null;
+        String avatarUrl = endpoint + "/" + bucketName + "/" + avatarName;
+        log.info("上传图片成功，图片地址：{}",avatarUrl);
+        if (StringUtils.hasText(userCache.getAvatar())){
+            log.info("开始删除用户原始头像");
+            try {
+                User one = this.getOne(new LambdaQueryWrapper<User>().eq(User::getId, userCache.getId()));
+                String[] split = one.getAvatar().split("/");
+
+                String oldAvatar = split[split.length-1];
+                minioUtils.removeObject(bucketName, oldAvatar);
+            } catch (Exception e) {
+                log.info("删除用户头像异常：{}",userCache.getId());
+                throw new RuntimeException(e);
+            }
+        }
+
+        userCache.setAvatar(avatarUrl);
+        this.updateById(userCache);
+
+        // 从缓存中取到user 更新缓存
+        // LoginUser loginUser = (LoginUser)redisCache.getCacheObject(WareHouseEnum.LOGIN_KEY + user.getId());
+        // loginUser.setUser(user);
+        // redisCache.setCacheObject(WareHouseEnum.LOGIN_KEY + user.getId(), loginUser,1, TimeUnit.HOURS);
+
+        return ResponseResult.success();
     }
 
     @Override

@@ -2,9 +2,12 @@ package com.tzt.warehouse.entity;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.util.List;
 
 /**
  * 产品表(Product)表实体类
@@ -54,9 +57,17 @@ public class Product extends BaseEntity {
      * 备注
      */
     private String remark;
+    /**
+     * 产品图片
+     */
+    @TableField(exist = false)
+    private List<ProductImg> productImgList;
 
-
-
+    /**
+     * 产品图片
+     */
+    // @TableField(exist = false)
+    // private List<MultipartFile> fileList;
 
 }
 

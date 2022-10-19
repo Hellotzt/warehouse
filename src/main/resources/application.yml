@@ -15,12 +15,12 @@ server:
 minio:
   accessKey: minioadmin
   secretKey: minioadmin
-  endpoint: http://124.221.96.103:9000
-  bucketName: test
+  endpoint: http://47.96.109.221:9000
+  bucketName: warehouse
 
-logging:
-  file:
-    name: ${spring.application.name}.log
-    path: ./logs
-  level:
-    root: info
+#logging:
+#  file:
+#    name: ${spring.application.name}.log
+#    path: ./logs
+#  level:
+#    root: info

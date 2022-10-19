@@ -3,7 +3,7 @@ server:
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://124.221.96.103:3306/warehouse?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&useSSL=true
+      url: jdbc:mysql://124.221.96.103:3306/warehouse?serverTimezone=GMT%2b8&useUnicode=true&characterEncoding=utf8&useSSL=true
       username: root
       password: tzt1234560.0
       driver-class-name: com.mysql.cj.jdbc.Driver

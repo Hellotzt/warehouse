@@ -23,6 +23,7 @@ public class BaseEntity {
      */
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+    // @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     /**
      * 更新人
@@ -35,6 +36,7 @@ public class BaseEntity {
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+    // @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
     /**
      * 删除标志（0代表未删除，1代表已删除）
