@@ -54,6 +54,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Resource
     private SysUserRoleService sysUserRoleService;
+
     @Resource
     private DeptPositionService deptPositionService;
     @Value("${minio.bucketName}")
@@ -104,6 +105,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public ResponseResult<Object> userList(UserDto userDto) {
+
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.like(StringUtils.hasText(userDto.getUserName()), User::getUserName, userDto.getUserName());
         wrapper.like(StringUtils.hasText(userDto.getPhone()), User::getPhone, userDto.getPhone());
@@ -131,7 +133,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
         });
 
-        return new ResponseResult(page);
+        return ResponseResult.success(page);
     }
 
     @Override

@@ -81,7 +81,7 @@ public class LoginServiceImpl implements LoginService {
         String roleId = sysUserRoleService.getById(userId).getRoleId();
         map.put("userType", roleId);
         log.info("登录成功:{}", JSON.toJSON(map));
-        return new ResponseResult(200, map);
+        return ResponseResult.success(map);
     }
 
     @Override
