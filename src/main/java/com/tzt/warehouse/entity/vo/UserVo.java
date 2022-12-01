@@ -1,12 +1,13 @@
 package com.tzt.warehouse.entity.vo;
 
+import com.tzt.warehouse.entity.BaseEntity;
 import lombok.Data;
 
 /**
  * @author：帅气的汤
  */
 @Data
-public class UserVo {
+public class UserVo extends BaseEntity {
     /**
      * 主键
      */
