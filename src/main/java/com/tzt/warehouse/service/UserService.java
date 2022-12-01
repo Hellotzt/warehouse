@@ -3,10 +3,7 @@ package com.tzt.warehouse.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.entity.User;
-import com.tzt.warehouse.entity.dto.PasswordDto;
-import com.tzt.warehouse.entity.dto.RegisterDto;
-import com.tzt.warehouse.entity.dto.SearchDTO;
-import com.tzt.warehouse.entity.dto.UserDto;
+import com.tzt.warehouse.entity.dto.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -51,4 +48,9 @@ public interface UserService extends IService<User> {
     ResponseResult<Object> updateAvatar(MultipartFile avatar) throws IOException;
 
     ResponseResult<Object> newRegister(SearchDTO searchDTO);
+
+    /**
+     * 修改用户部门职位
+     */
+    ResponseResult<Object> updateUserDept(UserDeptDto userDeptDto);
 }

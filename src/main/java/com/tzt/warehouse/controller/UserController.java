@@ -4,10 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.tzt.warehouse.comm.base.ResponseResult;
 import com.tzt.warehouse.comm.exception.ErrorCodeEnum;
 import com.tzt.warehouse.entity.User;
-import com.tzt.warehouse.entity.dto.PasswordDto;
-import com.tzt.warehouse.entity.dto.RegisterDto;
-import com.tzt.warehouse.entity.dto.SearchDTO;
-import com.tzt.warehouse.entity.dto.UserDto;
+import com.tzt.warehouse.entity.dto.*;
 import com.tzt.warehouse.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,6 +34,15 @@ public class UserController {
     @PostMapping("/register")
     public ResponseResult<Object> register(@RequestBody @Valid RegisterDto registerDto){
         return userService.register(registerDto);
+    }
+
+    /**
+     * 修改用户部门职位
+     */
+    @PostMapping("/updateUserDept")
+    @PreAuthorize("hasAuthority('system:user:update')")
+    public ResponseResult<Object> updateUserDept(@RequestBody @Valid UserDeptDto userDeptDto){
+        return userService.updateUserDept(userDeptDto);
     }
 
     /**

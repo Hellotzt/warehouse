@@ -22,14 +22,7 @@ public class DeptPosition extends BaseEntity {
      * 部门id
      */
     private String deptId;
-    /**
-     * 职位名称
-     */
-    private String positionName;
-    /**
-     * 部门名称
-     */
-    private String deptName;
+
     /**
      * 机构id
      */

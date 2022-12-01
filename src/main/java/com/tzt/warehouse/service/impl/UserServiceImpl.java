@@ -3,9 +3,11 @@ package com.tzt.warehouse.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tzt.warehouse.comm.Enum.WareHouseEnum;
@@ -19,10 +21,7 @@ import com.tzt.warehouse.comm.utlis.UserUtlis;
 import com.tzt.warehouse.entity.LoginUser;
 import com.tzt.warehouse.entity.SysUserRole;
 import com.tzt.warehouse.entity.User;
-import com.tzt.warehouse.entity.dto.PasswordDto;
-import com.tzt.warehouse.entity.dto.RegisterDto;
-import com.tzt.warehouse.entity.dto.SearchDTO;
-import com.tzt.warehouse.entity.dto.UserDto;
+import com.tzt.warehouse.entity.dto.*;
 import com.tzt.warehouse.entity.vo.UserVo;
 import com.tzt.warehouse.mapper.UserDao;
 import com.tzt.warehouse.service.DeptPositionService;
@@ -167,6 +166,18 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     public ResponseResult<Object> newRegister(SearchDTO searchDTO) {
         Page<User> page = this.page(new Page<>(searchDTO.getCurrent(), searchDTO.getSize()), new LambdaQueryWrapper<User>().eq(User::getStatus, "2"));
         return new ResponseResult(page);
+    }
+
+    /**
+     * 修改用户部门职位
+     */
+    @Override
+    public ResponseResult<Object> updateUserDept(UserDeptDto userDeptDto) {
+        boolean update = this.update(new LambdaUpdateWrapper<User>()
+                .eq(User::getId, userDeptDto.getUserId())
+                .set(StrUtil.isNotBlank(userDeptDto.getDeptId()), User::getDeptId, userDeptDto.getDeptId())
+                .set(StrUtil.isNotBlank(userDeptDto.getPositionId()), User::getPositionId, userDeptDto.getPositionId()));
+        return ResponseResult.success(update);
     }
 
     /**

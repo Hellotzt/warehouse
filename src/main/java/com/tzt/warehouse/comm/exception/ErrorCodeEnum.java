@@ -26,6 +26,7 @@ public enum ErrorCodeEnum {
     POSITION_ERROR(417, "有用户对应该职位，修改后重试"),
     DEPT_ERROR(418, "有用户对应该部门，修改后重试"),
     TOKEN_ERROR(419, "token已失效"),
+    DEPT_NULL(420, "该机构不存在"),
     ;
 
     private final int code;

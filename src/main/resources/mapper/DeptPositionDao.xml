@@ -11,8 +11,19 @@
         <result property="updateBy" column="update_by" jdbcType="INTEGER"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="delFlag" column="del_flag" jdbcType="INTEGER"/>
-        <result property="positionIds" column="position_ids" jdbcType="VARCHAR"/>
+        <!--  <result property="positionIds" column="position_ids" jdbcType="VARCHAR"/>-->
     </resultMap>
+    <select id="getDeptPosition" resultType="com.tzt.warehouse.entity.vo.DeptPositionVo">
+        SELECT
+            dp.dept_id,
+            position.id AS positionId,
+            position.position_name
+        FROM
+            dept_position dp
+            LEFT JOIN position on dp.position_id = position.id
+        WHERE
+            dp.dept_id = #{deptId}
+    </select>
 
 
 </mapper>

@@ -3,20 +3,26 @@ package com.tzt.warehouse.entity.dto;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 /**
  * @author：帅气的汤
+ * 用户部门职位dto
  */
 @Data
-public class DeptPositionDto {
+public class UserDeptDto {
+    /**
+     * 用户id
+     */
+    @NotBlank(message = "用户id不能为空")
+    private String userId;
     /**
      * 部门id
      */
     @NotBlank(message = "部门id不能为空")
     private String deptId;
     /**
-     * 职位id列表
+     * 职位id
      */
-    private List<String> positionIdList;
+    @NotBlank(message = "职位id不能为空")
+    private String positionId;
 }

@@ -26,12 +26,13 @@
 
     <select id="getUserList" resultType="com.tzt.warehouse.entity.vo.UserVo">
         SELECT
-            dp.dept_name,
-            dp.position_name,
+            dept.dept_name,
+            position.position_name,
             user.*
         FROM
             sys_user user
-        LEFT JOIN dept_position dp ON dp.position_id = user.position_id AND dp.dept_id = user.dept_id
+        LEFT JOIN dept On dept.id = user.dept_id
+        LEFT JOIN position on position.id = user.position_id
         <where>
             <if test="userDto.deptId != null and userDto.deptId != ''">
                 AND user.dept_id = #{userDto.deptId}

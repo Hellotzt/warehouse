@@ -13,12 +13,12 @@ import com.tzt.warehouse.entity.dto.DeptPositionDto;
  */
 public interface DeptPositionService extends IService<DeptPosition> {
     /**
-     * 部门添加职位
+     * 部门绑定职位
      */
     ResponseResult<Object> addDeptPosition(DeptPositionDto deptPositionDto);
 
     /**
-     * 获取部门职位
+     * 获取部门下的职位
      * @param deptPositionDto
      * @return
      */

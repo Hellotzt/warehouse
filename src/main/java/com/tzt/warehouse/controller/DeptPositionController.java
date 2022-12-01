@@ -19,18 +19,23 @@ import javax.validation.Valid;
  * @since 2022-09-25 02:36:05
  */
 @RestController
-@RequestMapping("deptPosition")
+@RequestMapping("/deptPosition")
 public class DeptPositionController {
-    /**
-     * 服务对象
-     */
+
     @Resource
     private DeptPositionService deptPositionService;
 
+    /**
+     * 部门绑定职位
+     */
     @PostMapping("/addDeptPosition")
     public ResponseResult<Object> addDeptPosition(@RequestBody @Valid DeptPositionDto deptPositionDto) {
         return deptPositionService.addDeptPosition(deptPositionDto);
     }
+
+    /**
+     * 获取部门下的职位
+     */
     @PostMapping("/getDeptPosition")
     public ResponseResult<Object> getDeptPosition(@RequestBody @Valid DeptPositionDto deptPositionDto) {
         return deptPositionService.getDeptPosition(deptPositionDto);
