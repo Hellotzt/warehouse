@@ -1,6 +1,7 @@
 package com.tzt.warehouse.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tzt.warehouse.entity.User;
 import com.tzt.warehouse.entity.dto.UserDto;
 import com.tzt.warehouse.entity.vo.UserVo;
@@ -11,5 +12,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserDao extends BaseMapper<User> {
-    UserVo getUserList(UserDto userDto);
+    Page<UserVo> getUserList(Page<UserVo> page, UserDto userDto);
 }

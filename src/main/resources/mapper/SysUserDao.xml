@@ -25,7 +25,36 @@
     </resultMap>
 
     <select id="getUserList" resultType="com.tzt.warehouse.entity.vo.UserVo">
-
+        SELECT
+            dp.dept_name,
+            dp.position_name,
+            user.*
+        FROM
+            sys_user user
+        LEFT JOIN dept_position dp ON dp.position_id = user.position_id AND dp.dept_id = user.dept_id
+        <where>
+            <if test="userDto.deptId != null and userDto.deptId != ''">
+                AND user.dept_id = #{userDto.deptId}
+            </if>
+            <if test="userDto.userName != null and userDto.userName != ''">
+                AND user.user_name like CONCAT('%',#{userDto.userName},'%')
+            </if>
+            <if test="userDto.idCard != null and userDto.idCard != ''">
+                AND user.id_card like CONCAT('%',#{userDto.idCard},'%')
+            </if>
+            <if test="userDto.phone != null and userDto.phone != ''">
+                AND user.phone like CONCAT('%',#{userDto.phone},'%')
+            </if>
+            <if test="userDto.phone != null and userDto.phone != ''">
+                AND user.phone like CONCAT('%',#{userDto.phone},'%')
+            </if>
+            <if test="userDto.status != null and userDto.status != ''">
+                AND user.status = #{userDto.status}
+            </if>
+            <if test="userDto.beginTime != null and userDto.beginTime != '' and userDto.endTime != null and userDto.endTime != ''">
+                AND user.create_time BETWEEN #{userDto.beginTime} AND #{userDto.endTime}
+            </if>
+        </where>
     </select>
 
 

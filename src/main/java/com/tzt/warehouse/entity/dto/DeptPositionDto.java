@@ -14,18 +14,8 @@ public class DeptPositionDto {
      */
     @NotBlank
     private String deptId;
-    private String positionIds;
     /**
-     * 职位id
+     * 职位id列表（字符串用逗号分割）
      */
-    // private String positionId;
-    // /**
-    //  * 职位名称
-    //  */
-    // private String positionName;
-    // /**
-    //  * 部门名称
-    //  */
-    // private String deptName;
-
+    private String positionIds;
 }

@@ -30,7 +30,7 @@ public class ResponseResult<T> {
     }
 
     public static ResponseResult<Object> success(Object data) {
-        return new ResponseResult<>(200,data);
+        return new ResponseResult<>(200,"操作成功",data);
     }
 
     public ResponseResult(ErrorCodeEnum codeEnum) {

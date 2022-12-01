@@ -16,7 +16,6 @@ import com.tzt.warehouse.comm.utlis.MinioUtils;
 import com.tzt.warehouse.comm.utlis.RedisCache;
 import com.tzt.warehouse.comm.utlis.StrUtils;
 import com.tzt.warehouse.comm.utlis.UserUtlis;
-import com.tzt.warehouse.entity.DeptPosition;
 import com.tzt.warehouse.entity.LoginUser;
 import com.tzt.warehouse.entity.SysUserRole;
 import com.tzt.warehouse.entity.User;
@@ -24,6 +23,7 @@ import com.tzt.warehouse.entity.dto.PasswordDto;
 import com.tzt.warehouse.entity.dto.RegisterDto;
 import com.tzt.warehouse.entity.dto.SearchDTO;
 import com.tzt.warehouse.entity.dto.UserDto;
+import com.tzt.warehouse.entity.vo.UserVo;
 import com.tzt.warehouse.mapper.UserDao;
 import com.tzt.warehouse.service.DeptPositionService;
 import com.tzt.warehouse.service.SysUserRoleService;
@@ -36,8 +36,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author：帅气的汤
@@ -105,35 +103,8 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
 
     @Override
     public ResponseResult<Object> userList(UserDto userDto) {
-
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(StringUtils.hasText(userDto.getUserName()), User::getUserName, userDto.getUserName());
-        wrapper.like(StringUtils.hasText(userDto.getPhone()), User::getPhone, userDto.getPhone());
-        wrapper.like(StringUtils.hasText(userDto.getIdCard()), User::getIdCard, userDto.getIdCard());
-        wrapper.eq(StringUtils.hasText(userDto.getSex()), User::getSex, userDto.getSex());
-        wrapper.eq(StringUtils.hasText(userDto.getUserType()), User::getUserType, userDto.getUserType());
-        wrapper.eq(StringUtils.hasText(userDto.getDepartment()), User::getDeptId, userDto.getDepartment());
-        wrapper.eq(StringUtils.hasText(userDto.getPosition()), User::getPositionId, userDto.getPosition());
-        wrapper.eq(StringUtils.hasText(userDto.getStatus()), User::getStatus, userDto.getStatus());
-
-        wrapper.between(StringUtils.hasText(userDto.getMax()) && StringUtils.hasText(userDto.getMin()), User::getSalary, userDto.getMin(), userDto.getMax());
-        Page<User> page = this.page(new Page<>(userDto.getCurrent(), userDto.getSize()), wrapper);
-        List<DeptPosition> deptPositionList = deptPositionService.list();
-
-        page.getRecords().forEach(user -> {
-            Optional<DeptPosition> optional = deptPositionList.stream().filter(deptPosition -> {
-                return deptPosition.getDeptId().equals(user.getDeptId()) && deptPosition.getPositionId().equals(user.getPositionId());
-            }).findFirst();
-
-            if (optional.isPresent()) {
-                DeptPosition deptPosition = optional.get();
-                user.setPositionName(deptPosition.getPositionName());
-                user.setDeptName(deptPosition.getDeptName());
-            }
-
-        });
-
-        return ResponseResult.success(page);
+        Page<UserVo> userList = baseMapper.getUserList(new Page<>(userDto.getCurrent(),userDto.getSize()),userDto);
+        return ResponseResult.success(userList);
     }
 
     @Override

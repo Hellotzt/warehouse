@@ -12,7 +12,9 @@ import com.tzt.warehouse.entity.dto.DeptPositionDto;
  * @since 2022-09-25 02:36:07
  */
 public interface DeptPositionService extends IService<DeptPosition> {
-
+    /**
+     * 部门添加职位
+     */
     ResponseResult<Object> addDeptPosition(DeptPositionDto deptPositionDto);
 
     /**
